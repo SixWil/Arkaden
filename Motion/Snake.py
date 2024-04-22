@@ -3,7 +3,7 @@ from random import randint as rand
 
 spel = True
 bonus = False
-mask = [5,5]
+mask = [5,5,5,5]
 
 yta = [
     '0','1','2','3','4','5','6','7','8','9',
@@ -19,7 +19,7 @@ yta = [
     ]
 
 def placering(x,y):
-    global bonus
+    global mask
     if yta[x+(y*10)] == 'O':
         global spel
         spel = False
@@ -28,10 +28,15 @@ def placering(x,y):
     else:
 
         if yta[x+(y*10)] == '*':
-            bonus += 1
+            mask += [x]
+            mask += [y]
             yta[rand(1,9)+(rand(1,9)*10)] = '*'
+            
 
-        yta[x+(y*10)] = 'O'
+        yta[mask[-2] + mask[-1]*10] = 'O'
+        yta[mask[0] + mask[1]*10] = ' '
+        mask.pop(0)
+        mask.pop(0)
     
         for i in range(33):
             print()
@@ -48,7 +53,6 @@ key = keyboard.read_key()
 
 while spel == True:
     if keyboard.read_key() in ['w','s','d','a']:
-        yta[x+(y*10)] = ' '
 
         # yta[x+((y+bonus)*10)] = ' '
         # yta[x+((y-bonus)*10)] = ' '
@@ -68,4 +72,8 @@ while spel == True:
         if key == 'd' and x < 9:
             
             x += 1
+
+        mask += [x,y]
+        
+        print(mask)
         placering(x,y)
