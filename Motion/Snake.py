@@ -7,6 +7,7 @@ spel = True
 bonus = False
 mask = [5,5,5,5]
 poäng = 0
+counter = 0
 
 yta = [
     ' ','0','1','2','3','4','5','6','7','8','9',' ',
@@ -15,7 +16,7 @@ yta = [
     '2',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','7',
     '3',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','6',
     '4',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','5',
-    '5',' ',' ',' ','*',' ',' ',' ',' ',' ',' ','4',
+    '5',' ',' ',' ','¤',' ',' ',' ',' ',' ',' ','4',
     '6',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','3',
     '7',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','2',
     '8',' ',' ',' ',' ',' ',' ',' ',' ',' ',' ','1',
@@ -31,6 +32,7 @@ def placering():
     global höjd
     global spel
     global poäng
+    global counter
 
     while spel == True:
         x += bred
@@ -43,15 +45,35 @@ def placering():
             
         else:
 
-            if yta[x+(y*12)] == '*':
+            if yta[x+(y*12)] == '¤':
                 poäng += 1
                 mask += [x]
                 mask += [y]
-                yta[rand(3,10)+(rand(3,10)*12)] = '*'
+                # while True:
+
+                # rx = rand(3,10)
+                # ry = rand(3,10)
+                # while {yta[rx + ry*12]} == 'o'or yta[rx + ry] == 'O':
+                #     rx = rand(3,10)
+                #     ry = rand(3,10)
+                # else:
+                #     yta[rx + ry*12] = '¤'
+                #     break
+            if yta.count('¤') < 4:
                 
+                if rand(1,10) == 10:
+                    yta[rand(3,10) + rand(3,10)*12] = '¤'
+                    counter = 0
+                else:
+                    counter += 1
+                if counter == 10:
+                    counter = 0
+                    yta[rand(3,10) + rand(3,10)*12] = '¤'
 
             yta[mask[-2] + mask[-1]*12] = 'O'
-            yta[mask[0] + mask[1]*12] = ' '
+            yta[mask[-4] + mask[-3]*12] = 'o'
+            if yta[mask[0] + mask[1]*12] != '¤':
+                yta[mask[0] + mask[1]*12] = ' '
             mask.pop(0)
             mask.pop(0)
     
