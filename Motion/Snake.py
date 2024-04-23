@@ -1,6 +1,7 @@
 import keyboard
 from random import randint as rand
 import time
+import threading
 
 spel = True
 bonus = False
@@ -65,28 +66,32 @@ while spel == True:
         # if keyboard.read_key() in ['s','a','d']:
         #     break
         höjd = -1
-        bred = 0
+        if not keyboard.is_pressed('a') and not keyboard.is_pressed('d'):
+            bred = 0
         
         
     if keyboard.is_pressed('s'):
         # if keyboard.read_key() in ['w','a','d']:
         #     break
         höjd = 1
-        bred = 0
+        if not keyboard.is_pressed('a') and not keyboard.is_pressed('d'):
+            bred = 0
         
 
     if keyboard.is_pressed('a'):
         # if keyboard.read_key() in ['w','s','d']:
         #     break
         bred = -1
-        höjd = 0
+        if not keyboard.is_pressed('w') and not keyboard.is_pressed('s'):
+            höjd = 0
         
 
     if keyboard.is_pressed('d'):
         # if keyboard.read_key() in ['w','s','a']:
         #     break
         bred = 1
-        höjd = 0
+        if not keyboard.is_pressed('w') and not keyboard.is_pressed('s'):
+            höjd = 0
     
     
 
