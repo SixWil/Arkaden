@@ -213,7 +213,7 @@ while spel == True:
         
 
     if keyboard.is_pressed('d'):
-        # if keyboard.read_key() in ['w','s','a']:
+        # if keyoard.read_key() in ['w','s','a']:
         #     break
         bred = 1
         höjd = 0
