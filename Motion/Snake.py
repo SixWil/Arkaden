@@ -193,7 +193,7 @@ while spel == True:
 
     if keyboard.is_pressed('w'):
         # if keyboard.read_key() in ['s','a','d']:
-        #     breakk
+        #     break
         höjd = -1
         bred = 0
         
