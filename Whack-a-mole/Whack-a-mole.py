@@ -3,13 +3,15 @@ from time import sleep
 import random
 import threading
 
-
+# variabler
 
 värde = random.randint(1,9)
 poäng = 0
 timer = 10
 wait = 1
 spel = False
+
+# timer
 
 def timerer():
     global timer
@@ -23,8 +25,11 @@ def timerer():
     else:
         spel = False
         
+# thread för timer så den kan köra oavsett av spelarens input
 
 tt = threading.Thread(target=timerer)
+
+# skärmen
 
 window = sg.Window('', layout=[
     [sg.Text(f'poäng: {poäng}', key='-poäng-')],
@@ -36,16 +41,29 @@ window = sg.Window('', layout=[
 ])
 
 
+# event blir värdet av knappen tryckt
 event, value = window.read()
+#starta timern
 tt.start()
+# avläs om event är samma som värde, om så ge poäng av tid, annars dra av poäng av tid.
 while True:
-    
-    if int(event) == värde and timer > 0:
-        poäng += timer
-        timer = 11
-        wait -= 0.1
-        window['-poäng-'].update(f'poäng: {poäng}')
-        värde = random.randint(1,9)
-        window['-värde-'].update(f'värde: {värde}')
-        
+    # så länge det finns tid kvar på klockan.
+    if timer > 0:
+        # om knappen tryckt är rätt
+        if int(event) == värde:
+            poäng += timer
+            timer = 11
+            wait -= 0.1
+            window['-poäng-'].update(f'poäng: {poäng}')
+            värde = random.randint(1,9)
+            window['-värde-'].update(f'värde: {värde}')
+        # om knappen tryckt är fel
+        else:
+            poäng -= timer
+            timer = 11
+            wait -= 0.1
+            window['-poäng-'].update(f'poäng: {poäng}')
+            värde = random.randint(1,9)
+            window['-värde-'].update(f'värde: {värde}')
+    # kolla vilken knapp är tryckt
     event, value = window.read()
