@@ -57,6 +57,7 @@ def placering():
     global counter
     global hastighet
     global window
+    global bonus
 
     while spel == True:
         x += bred
@@ -73,8 +74,10 @@ def placering():
                 poäng += 1 / hastighet
                 # poäng = round(poäng)
                 hastighet -= hastighet / 10
-                mask += [x]
-                mask += [y]
+                bonus = True
+                # mask.append(yta[(mask[0]) + (mask[1])*12])
+                # mask += [x]
+                # mask += [y]
                 # while True:
 
                 # rx = rand(3,10)
@@ -95,15 +98,19 @@ def placering():
                 if counter == 10:
                     counter = 0
                     yta[rand(1,10) + rand(1,10)*12] = ' + '
-
-            yta[mask[-4] + mask[-3]*12] = ' ¤ '
+           
             yta[mask[-2] + mask[-1]*12] = ' o '
+            yta[mask[-4] + mask[-3]*12] = ' ¤ '
             yta[mask[-6] + mask[-5]*12] = ' ¤ '
             if yta[mask[0] + mask[1]*12] == ' ¤ ':
                 yta[mask[0] + mask[1]*12] = '[_]'
-            mask.pop(0)
-            mask.pop(0)
-            time.sleep(hastighet)
+            if bonus == False:
+                mask.pop(0)
+                mask.pop(0)
+            else:
+                bonus = False
+        time.sleep(hastighet)
+            
 #             window['-banan-'].update(f'''{yta[0:10+2]}
 # {yta[10+2:20+2+2]}
 # {yta[20+2+2:30+2+2+2]}
