@@ -27,6 +27,8 @@ yta = [
     ]
 
 window = sg.Window('', layout=[
+[sg.Text(f'poäng: {round(poäng)}',key='-poäng-')],
+[sg.Text(f'hastighet: {round((1-hastighet))}',key='-hastighet-'),],
 [sg.Text(f'''
 {yta[0+(12*0)]}{yta[1+(12*0)]}{yta[2+(12*0)]}{yta[3+(12*0)]}{yta[4+(12*0)]}{yta[5+(12*0)]}{yta[6+(12*0)]}{yta[7+(12*0)]}{yta[8+(12*0)]}{yta[9+(12*0)]}{yta[10+(12*0)]}{yta[11+(12*0)]}
 {yta[12+(12*0)]}{yta[1+(12*1)]}{yta[2+(12*1)]}{yta[3+(12*1)]}{yta[4+(12*1)]}{yta[5+(12*1)]}{yta[6+(12*1)]}{yta[7+(12*1)]}{yta[8+(12*1)]}{yta[9+(12*1)]}{yta[10+(12*1)]}{yta[11+(12*1)]}
@@ -40,7 +42,7 @@ window = sg.Window('', layout=[
 {yta[12+(12*8)]}{yta[1+(12*9)]}{yta[2+(12*9)]}{yta[3+(12*9)]}{yta[4+(12*9)]}{yta[5+(12*9)]}{yta[6+(12*9)]}{yta[7+(12*9)]}{yta[8+(12*9)]}{yta[9+(12*9)]}{yta[10+(12*9)]}{yta[11+(12*9)]}
 {yta[12+(12*9)]}{yta[1+(12*10)]}{yta[2+(12*10)]}{yta[3+(12*10)]}{yta[4+(12*10)]}{yta[5+(12*10)]}{yta[6+(12*10)]}{yta[7+(12*10)]}{yta[8+(12*10)]}{yta[10+(12*10)]}{yta[10+(12*10)]}{yta[11+(12*10)]}
 {yta[12+(12*10)]}{yta[1+(12*11)]}{yta[2+(12*11)]}{yta[3+(12*11)]}{yta[4+(12*11)]}{yta[5+(12*11)]}{yta[6+(12*11)]}{yta[7+(12*11)]}{yta[8+(12*11)]}{yta[9+(12*11)]}{yta[10+(12*11)]}{yta[11+(12*11)]}
-''', key='-banan-')],
+''', font='arial 20', key='-banan-')],
 ])
 window.Read(1000)
 
@@ -57,20 +59,20 @@ def placering():
     global window
 
     while spel == True:
-        time.sleep(hastighet)
         x += bred
         y += höjd
         
         mask += [x,y]
-        if yta[x+(y*12)] in [' ¤ ',' o ','1','2','3','4','5','6','7','8','9','0']:
+        if yta[x+(y*12)] in [' ¤ ',' o ','#',' # ']:
+            yta[mask[-2] + mask[-1]*12] = ' x '
+            window.refresh()
             spel = False
-            print(f'Du fick {poäng} poäng')
-            
         else:
 
             if yta[x+(y*12)] == ' + ':
-                poäng += 1
-                hastighet -= hastighet/10
+                poäng += 1 / hastighet
+                # poäng = round(poäng)
+                hastighet -= hastighet / 10
                 mask += [x]
                 mask += [y]
                 # while True:
@@ -85,22 +87,23 @@ def placering():
                 #     break
             if yta.count(' + ') < 3:
 
-                if rand(1,10) == 10:
-                    yta[rand(1,10) + rand(1,10)*12] = ' + '
-                    counter = 0
-                else:
-                    counter += 1
+                # if rand(1,10) == 10:
+                #     yta[rand(1,10) + rand(1,10)*12] = ' + '
+                #     counter = 0
+                # else:
+                counter += 1
                 if counter == 10:
                     counter = 0
                     yta[rand(1,10) + rand(1,10)*12] = ' + '
 
-            yta[mask[-6] + mask[-5]*12] = ' ¤ '
             yta[mask[-4] + mask[-3]*12] = ' ¤ '
             yta[mask[-2] + mask[-1]*12] = ' o '
-            if yta[mask[0] + mask[1]*12] != ' + ':
+            yta[mask[-6] + mask[-5]*12] = ' ¤ '
+            if yta[mask[0] + mask[1]*12] == ' ¤ ':
                 yta[mask[0] + mask[1]*12] = '[_]'
             mask.pop(0)
             mask.pop(0)
+            time.sleep(hastighet)
 #             window['-banan-'].update(f'''{yta[0:10+2]}
 # {yta[10+2:20+2+2]}
 # {yta[20+2+2:30+2+2+2]}
@@ -242,6 +245,8 @@ while spel == True:
 {yta[12+(12*9)]}{yta[1+(12*10)]}{yta[2+(12*10)]}{yta[3+(12*10)]}{yta[4+(12*10)]}{yta[5+(12*10)]}{yta[6+(12*10)]}{yta[7+(12*10)]}{yta[8+(12*10)]}{yta[10+(12*10)]}{yta[10+(12*10)]}{yta[11+(12*10)]}
 {yta[12+(12*10)]}{yta[1+(12*11)]}{yta[2+(12*11)]}{yta[3+(12*11)]}{yta[4+(12*11)]}{yta[5+(12*11)]}{yta[6+(12*11)]}{yta[7+(12*11)]}{yta[8+(12*11)]}{yta[9+(12*11)]}{yta[10+(12*11)]}{yta[11+(12*11)]}
 ''')
+    window['-poäng-'].update(f'poäng: {round(poäng)}')
+    window['-hastighet-'].update(f'hastighet: {round((1-hastighet)*100)}')
     window.refresh()
     
 
@@ -271,7 +276,9 @@ while spel == True:
         #     break
         bred = 1
         höjd = 0
-    
-    
 
-    
+else:
+    window['-poäng-'].update(f'Du fick {round(poäng)} poäng,')
+    window['-hastighet-'].update(f'med en top hastighet på {round((1-hastighet)*100)}')
+    print(f'Du fick {round(poäng)} poäng, med en top hastighet på {round((1-hastighet*100))}')
+    window.read()
