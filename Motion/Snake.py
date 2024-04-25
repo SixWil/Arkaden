@@ -8,6 +8,7 @@ bonus = False
 mask = [5,5,5,5]
 poäng = 0
 counter = 0
+hastighet = 1
 
 yta = [
     ' ','0','1','2','3','4','5','6','7','8','9',' ',
@@ -33,6 +34,7 @@ def placering():
     global spel
     global poäng
     global counter
+    global hastighet
 
     while spel == True:
         x += bred
@@ -47,6 +49,7 @@ def placering():
 
             if yta[x+(y*12)] == '¤':
                 poäng += 1
+                hastighet -= hastighet/10
                 mask += [x]
                 mask += [y]
                 # while True:
@@ -54,13 +57,13 @@ def placering():
                 # rx = rand(3,10)
                 # ry = rand(3,10)
                 # while {yta[rx + ry*12]} == 'o'or yta[rx + ry] == 'O':
-                #     rx = rand(3,10)
+                #     rx = rand(3,10
                 #     ry = rand(3,10)
                 # else:
                 #     yta[rx + ry*12] = '¤'
                 #     break
-            if yta.count('¤') < 4:
-                
+            if yta.count('¤') < 3:
+
                 if rand(1,10) == 10:
                     yta[rand(3,10) + rand(3,10)*12] = '¤'
                     counter = 0
@@ -125,7 +128,7 @@ def placering():
                 {yta[100+2+2+2+2+2+2+2+2+2+2:110+2+2+2+2+2+2+2+2+2+2+2]}
                 {yta[110+2+2+2+2+2+2+2+2+2+2+2:120+2+2+2+2+2+2+2+2+2+2+2+2]}''')
         
-        time.sleep(.3)
+        time.sleep(hastighet)
 
 # placering(5,5)
 
