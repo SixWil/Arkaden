@@ -11,6 +11,8 @@ poäng = 0
 counter = 9
 hastighet = 1
 
+
+# spelplanen som kallas varje 'tick'
 yta = [
     '#',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ','#',
     '#','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','#',
@@ -25,7 +27,7 @@ yta = [
     '#','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','[_]','#',
     '#',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ',' # ','#',
     ]
-
+# pop up ruta
 window = sg.Window('', layout=[
 [sg.Text(f'poäng: {round(poäng)}',key='-poäng-')],
 [sg.Text(f'hastighet: {round((1-hastighet))}',key='-hastighet-'),],
@@ -46,6 +48,8 @@ window = sg.Window('', layout=[
 ])
 window.Read(1000)
 
+
+# thread som kör samtidigt som kontrollerna
 def placering():
     global mask
     global x
@@ -58,18 +62,20 @@ def placering():
     global hastighet
     global window
     global bonus
-
+    # om du inte kraschat
     while spel == True:
         x += bred
         y += höjd
         
         mask += [x,y]
+
+        # om du kraschar
         if yta[x+(y*12)] in [' ¤ ',' o ','#',' # ']:
             yta[mask[-2] + mask[-1]*12] = ' x '
             window.refresh()
             spel = False
         else:
-
+            # poäng systemet
             if yta[x+(y*12)] == ' + ':
                 poäng += 1 / hastighet
                 # poäng = round(poäng)
@@ -88,6 +94,7 @@ def placering():
                 # else:
                 #     yta[rx + ry*12] = '¤'
                 #     break
+            # poäng placerings systemet
             if yta.count(' + ') < 3:
 
                 # if rand(1,10) == 10:
@@ -100,6 +107,8 @@ def placering():
                     yta[rand(1,10) + rand(1,10)*12] = ' + '
            
             # yta[mask[-6] + mask[-5]*12] = ' ¤ '
+                    
+            # mask placerings systemet
             yta[mask[-4] + mask[-3]*12] = ' ¤ '
             yta[mask[-2] + mask[-1]*12] = ' o '
             if yta[mask[0] + mask[1]*12] == ' ¤ ':
@@ -109,6 +118,8 @@ def placering():
                 mask.pop(0)
             else:
                 bonus = False
+        
+        # tick rate
         time.sleep(hastighet)
             
 #             window['-banan-'].update(f'''{yta[0:10+2]}
@@ -235,7 +246,7 @@ key = keyboard.read_key()
 threading.Thread(target=placering).start()
 
 
-
+# kontrollerna
 while spel == True:
 
     window['-banan-'].update(f'''
@@ -283,7 +294,7 @@ while spel == True:
         #     break
         bred = 1
         höjd = 0
-
+# om du kraschat
 else:
     window['-poäng-'].update(f'Du fick {round(poäng)} poäng,')
     window['-hastighet-'].update(f'med en top hastighet på {round((1-hastighet)*100)}')
